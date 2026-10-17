@@ -1,0 +1,10 @@
+import { execFileSync } from 'node:child_process';
+import { cpSync, mkdirSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+const root=fileURLToPath(new URL('../',import.meta.url));
+execFileSync('npm',['run','build'],{cwd:root+'Tip',stdio:'inherit'});
+mkdirSync(root+'docs/Tip',{recursive:true});
+cpSync(root+'Tip/dist',root+'docs/Tip',{recursive:true});
+cpSync(root+'index.html',root+'docs/index.html');
+writeFileSync(root+'docs/.nojekyll','');
+console.log('GitHub Pages files ready in docs/.');

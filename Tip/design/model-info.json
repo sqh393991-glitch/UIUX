@@ -1,0 +1,36 @@
+{
+  "name": "TIP 01",
+  "original_model": true,
+  "units": "metres",
+  "width_m": 0.15,
+  "depth_m": 0.145,
+  "height_m": 0.046,
+  "blender_axes": {
+    "X": "left/right",
+    "Y": "front to rear (+Y temples)",
+    "Z": "up"
+  },
+  "gltf_axes": {
+    "X": "left/right",
+    "Y": "up",
+    "Z": "rear to front (front at +Z)"
+  },
+  "root_origin_blender": [
+    0,
+    0.055,
+    0
+  ],
+  "objects": 45,
+  "vertices": 19662,
+  "triangles": 38996,
+  "materials": 11,
+  "assets": [
+    "tip-01.glb",
+    "tip-01-hero.png",
+    "tip-01-studio.png",
+    "tip-01-detail.png"
+  ],
+  "note": "Concept geometry for portfolio presentation; not a production-engineered wearable.",
+  "glb_bytes": 797256,
+  "glb_meshes": 44
+}
