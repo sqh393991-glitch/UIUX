@@ -3,7 +3,28 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-export async function initViewer(){
+export function initViewer(){
+ const open=document.querySelector('#model-open');
+ const stage=document.querySelector('#product-viewer');
+ let started=false;
+ const start=()=>{
+  if(started)return;
+  started=true;
+  stage.classList.add('is-open');
+  stage.dataset.modelOpen='true';
+  if(open)open.hidden=true;
+  const poster=document.querySelector('#model-poster');
+  if(poster)poster.hidden=true;
+  stage.querySelectorAll('[data-model-controls]').forEach(el=>el.hidden=false);
+  const loader=document.querySelector('#model-loader');
+  if(loader)loader.hidden=false;
+  createViewer();
+ };
+ if(open)open.addEventListener('click',start);
+ else start();
+}
+
+async function createViewer(){
  const host=document.querySelector('#glasses-canvas'),stage=document.querySelector('#product-viewer'),loader=document.querySelector('#model-loader');
  let renderer;
  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});}catch{host.innerHTML='<img class="model-fallback" src="./models/tip-glasses-hero.webp" alt="TIP 01 graphite AR glasses"><p class="model-top">3D is unavailable. Product view shown.</p>';return;}

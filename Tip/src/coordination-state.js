@@ -12,12 +12,16 @@ export function createInitialState() {
     phase: 'request',
     availability: 'available',
     handoffSeen: false,
+    handoffEditing: false,
+    handoffSent: false,
+    handoffDraft: { title: 'Prep is done.', body: 'Please refill the cups before service starts.' },
     incomingNoteSeen: false,
     messages: [],
     question: '',
     outgoing: null,
     editorVisible: true,
     outgoingNotice: '',
+    outgoingCancelled: false,
     draft: { help: REQUEST_OPTIONS.help[0], where: REQUEST_OPTIONS.where[0], duration: REQUEST_OPTIONS.duration[0] },
   };
 }
@@ -68,6 +72,19 @@ export function reduceCoordination(state, action) {
       return state.phase === 'covering' ? { ...state, incomingNoteSeen: true } : state;
     case 'ACK_HANDOFF':
       return { ...state, handoffSeen: true };
+    case 'EDIT_HANDOFF':
+      return { ...state, handoffEditing: true };
+    case 'CANCEL_HANDOFF_EDIT':
+      return { ...state, handoffEditing: false };
+    case 'SAVE_HANDOFF_DRAFT': {
+      const title = String(action.title || '').trim().slice(0, 80);
+      const body = String(action.body || '').trim().slice(0, 240);
+      return title && body ? {
+        ...state, handoffDraft: { title, body }, handoffEditing: false, handoffSent: false,
+      } : state;
+    }
+    case 'SEND_HANDOFF':
+      return state.handoffEditing ? state : { ...state, handoffSent: true };
     case 'SEND_MESSAGE': {
       const message = String(action.message || '').trim().slice(0, 160);
       return message && isActiveCoverage(state) ? { ...state, messages: [...state.messages, message] } : state;
@@ -86,18 +103,25 @@ export function reduceCoordination(state, action) {
         draft: { ...draft },
         outgoing: { ...draft, author: 'Allyson', status: 'open' },
         editorVisible: false,
-        outgoingNotice: 'Request sent to your on-shift team.',
+        outgoingNotice: 'Request sent.',
+        outgoingCancelled: false,
       };
     }
     case 'EDIT_REQUEST':
-      return state.outgoing ? { ...state, editorVisible: true, outgoingNotice: 'Your request stays open while you edit.' } : state;
+      return state.outgoing ? { ...state, editorVisible: true, outgoingNotice: '' } : state;
     case 'CANCEL_REQUEST':
       return state.outgoing ? {
         ...state,
         outgoing: null,
         editorVisible: true,
-        outgoingNotice: 'Request cancelled. It is no longer visible to your team.',
+        outgoingNotice: 'Request cancelled.',
+        outgoingCancelled: true,
       } : state;
+    case 'NEW_REQUEST':
+      return {
+        ...state, outgoing: null, editorVisible: true, outgoingCancelled: false, outgoingNotice: '',
+        draft: { help: REQUEST_OPTIONS.help[0], where: REQUEST_OPTIONS.where[0], duration: REQUEST_OPTIONS.duration[0] },
+      };
     default:
       return state;
   }
@@ -105,7 +129,7 @@ export function reduceCoordination(state, action) {
 
 export function availabilityCopy(state) {
   const copy = {
-    available: 'You can receive new requests.',
+    available: 'You’ll receive new requests.',
     busy: 'New requests are paused while you finish your task.',
     break: 'New requests are paused while you take a break.',
   }[state.availability];

@@ -1,6 +1,6 @@
 # TIP
 
-A coded portfolio website by Anqi Lu, focused on Scenario 2: restaurant workers using AR to ask for help, coordinate a handoff and share work information.
+A coded version of Anqi Lu’s original TIP Figma website, focused on Scenario 2. The original wording, section order, restaurant scenes and layout are preserved. A new rotatable glasses model replaces the product image in its existing space.
 
 **Live:** https://sqh393991-glitch.github.io/UIUX/Tip/
 
@@ -45,7 +45,7 @@ From the repository root, run `node scripts/build-pages.mjs` to build `Tip/` and
 - Drag the glasses to rotate; choose Front, Side, or 3/4; use Home to reset or arrow keys to rotate while focused.
 - Drag the restaurant image left/right, use the three view buttons, or recenter. This preserves the original panoramic photograph interaction; the restaurant is not a full 3D reconstruction.
 - Request → Accept → Arrive → Coordinate → Handback → Complete. The panorama and step walkthrough share state. The four tabs preview stages; the actual task path requires Alex to confirm the handback.
-- Dismiss and undo, local messages, request dropdowns with edit/cancel, handoff acknowledgement and availability work in the browser.
+- Dismiss and undo, local messages, request dropdowns with edit/cancel, shift notes and availability work in the browser.
 - Incoming Alex requests and outgoing Allyson requests are separate. Busy/Break pauses new requests but does not erase accepted coverage.
 - Refresh resets the demonstration. No backend, camera, microphone, employee tracking, or real messages are used.
 
@@ -55,4 +55,4 @@ This is a 2036 design concept. The website is functional; the physical glasses a
 
 Design and TIP logo: Anqi Lu. Original geometry, interface implementation and site production developed with AI assistance. Restaurant panoramas are AI-generated images from the earlier TIP project. Three.js is MIT-licensed; Inter uses the SIL Open Font License. Notices are in `THIRD_PARTY_NOTICES.md`. No stock glasses mesh is used in this version.
 
-No user-testing outcomes or product performance metrics have been invented. The process section distinguishes design intent from further research needed.
+Product prices and specifications are retained from the original speculative design and are not claims about manufactured hardware. No product is offered for sale.
