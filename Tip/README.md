@@ -13,13 +13,16 @@ npm ci
 npm run dev
 ```
 
-Open the address printed by Vite. This is a normal HTML, CSS and JavaScript project; it does not require Figma or a Figma subscription.
+For viewing, use the live link or double-click `Open TIP.webloc`. Opening the source `index.html` as a local file redirects to the live site.
+
+For local development, open the address printed by Vite. This is a normal HTML, CSS and JavaScript project; it does not require Figma or a Figma subscription.
 
 ## Edit
 
 | File | Contents |
 | --- | --- |
-| `src/main.js` | Page sections, copy, icons and layout markup |
+| `src/page-markup.js` | Page sections, copy, icons and layout markup |
+| `src/main.js` | Interactive initialization |
 | `src/style.css` | Typography, colors, spacing, responsive layout and motion |
 | `src/coordination-state.js` | Shared task, availability and outgoing-request state |
 | `src/coordination.js` | Task cards, forms, messages and state rendering |
