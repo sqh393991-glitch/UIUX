@@ -2,9 +2,9 @@
   "name": "TIP 01",
   "original_model": true,
   "units": "metres",
-  "width_m": 0.162,
-  "depth_m": 0.153,
-  "height_m": 0.057,
+  "width_m": 0.15279,
+  "depth_m": 0.15035,
+  "height_m": 0.04314,
   "blender_axes": {
     "X": "left/right",
     "Y": "front to rear (+Y temples)",
@@ -17,18 +17,18 @@
   },
   "root_origin_blender": [
     0,
-    0.055,
+    0,
     0
   ],
-  "objects": 83,
-  "vertices": 26542,
-  "triangles": 51864,
-  "materials": 11,
+  "objects": 22,
+  "vertices": 21800,
+  "triangles": 42894,
+  "materials": 12,
   "assets": [
     "tip-01.glb",
-    "tip-01-hero.png",
-    "tip-01-studio.png",
-    "tip-01-detail.png"
+    "tip-glasses-hero.webp",
+    "tip-glasses-studio.webp",
+    "tip-glasses-detail.webp"
   ],
-  "note": "Thicker electronics brow and temples, separate sensor housings, machined side panels, status bar and acoustic apertures. Concept geometry for portfolio; not manufacturing validated."
+  "note": "Original matte black half-rim frame with a swept brow, integrated camera and tapered temples. Portfolio concept."
 }
