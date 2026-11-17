@@ -14,7 +14,7 @@ export function initViewer(){
   stage.dataset.modelOpen='true';
   if(open)open.hidden=true;
   const poster=document.querySelector('#model-poster');
-  if(poster)poster.hidden=true;
+  if(poster)poster.hidden=false;
   stage.querySelectorAll('[data-model-controls]').forEach(el=>el.hidden=false);
   const loader=document.querySelector('#model-loader');
   if(loader)loader.hidden=false;
@@ -26,9 +26,11 @@ export function initViewer(){
 
 async function createViewer(){
  const host=document.querySelector('#glasses-canvas'),stage=document.querySelector('#product-viewer'),loader=document.querySelector('#model-loader');
+ const poster=document.querySelector('#model-poster');
+ const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
  let renderer;
- try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});}catch{host.innerHTML='<img class="model-fallback" src="./models/tip-glasses-hero.webp" alt="TIP 01 graphite AR glasses"><p class="model-top">3D is unavailable. Product view shown.</p>';return;}
- renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(host.clientWidth,host.clientHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.prepend(renderer.domElement);
+ try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});}catch{if(poster)poster.hidden=true;host.innerHTML='<img class="model-fallback" src="./models/tip-glasses-hero.webp?v=20261117" alt="TIP 01 graphite AR glasses"><p class="model-top">3D is unavailable. Product view shown.</p>';return;}
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(host.clientWidth,host.clientHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.prepend(renderer.domElement);renderer.domElement.style.opacity='0';
  const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(35,host.clientWidth/host.clientHeight,.001,10);
  const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.enablePan=false;controls.enableZoom=false;controls.minPolarAngle=.15;controls.maxPolarAngle=Math.PI-.15;controls.autoRotate=false;
  const pmrem=new THREE.PMREMGenerator(renderer);const room=new RoomEnvironment();scene.environment=pmrem.fromScene(room,.04).texture;room.dispose();
@@ -38,7 +40,13 @@ async function createViewer(){
  let center=new THREE.Vector3(),radius=.12,boundRadius=.1,targetPos=null,ready=false,visible=true;
  const defaultVector=new THREE.Vector3(.70,.48,1);
  function setAngle(name,immediate=false){const directions={'three-quarter':defaultVector,front:new THREE.Vector3(0,.06,1),side:new THREE.Vector3(1,.20,.08)};const v=(directions[name]||defaultVector).clone().normalize().multiplyScalar(radius);targetPos=center.clone().add(v);if(immediate){camera.position.copy(targetPos);targetPos=null;}controls.target.copy(center);document.querySelectorAll('[data-angle]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.angle===name)));}
- try{const gltf=await new GLTFLoader().loadAsync('./models/tip-01.glb');const model=gltf.scene;scene.add(model);const box=new THREE.Box3().setFromObject(model);box.getCenter(center);const size=box.getSize(new THREE.Vector3());boundRadius=box.getBoundingSphere(new THREE.Sphere()).radius;radius=boundRadius/Math.sin(Math.atan(Math.tan(THREE.MathUtils.degToRad(35/2))*Math.min(camera.aspect,1)))*1.10;shadow.position.set(center.x,box.min.y-.008,center.z);model.traverse(n=>{if(n.isMesh&&n.material){n.material.envMapIntensity=1.6;}});setAngle('three-quarter',true);controls.update();ready=true;loader.hidden=true;host.dataset.ready='true';}catch(err){loader.innerHTML='The model could not load. <button id="retry-model" class="text-button">Try again</button>';document.querySelector('#retry-model').onclick=()=>location.reload();console.error('TIP model load failed',err);}
+ try{const gltf=await new GLTFLoader().loadAsync('./models/tip-01.glb?v=20261117');const model=gltf.scene;scene.add(model);const box=new THREE.Box3().setFromObject(model);box.getCenter(center);const size=box.getSize(new THREE.Vector3());boundRadius=box.getBoundingSphere(new THREE.Sphere()).radius;radius=boundRadius/Math.sin(Math.atan(Math.tan(THREE.MathUtils.degToRad(35/2))*Math.min(camera.aspect,1)))*1.10;shadow.position.set(center.x,box.min.y-.008,center.z);model.traverse(n=>{if(n.isMesh&&n.material){n.material.envMapIntensity=1.6;}});setAngle('three-quarter',true);controls.update();ready=true;loader.hidden=true;host.dataset.ready='true';
+  renderer.domElement.style.opacity='1';
+  if(!reducedMotion.matches){
+   renderer.domElement.animate([{opacity:0},{opacity:1}],{duration:520,easing:'cubic-bezier(.22,1,.36,1)'});
+   if(poster){const fade=poster.animate([{opacity:1},{opacity:0}],{duration:380,easing:'ease-out'});fade.finished.then(()=>poster.hidden=true).catch(()=>poster.hidden=true);}
+  }else if(poster)poster.hidden=true;
+ }catch(err){loader.innerHTML='The model could not load. <button id="retry-model" class="text-button">Try again</button>';document.querySelector('#retry-model').onclick=()=>location.reload();console.error('TIP model load failed',err);}
  document.querySelectorAll('[data-angle]').forEach(b=>b.onclick=()=>setAngle(b.dataset.angle));document.querySelector('#model-reset').onclick=()=>setAngle('three-quarter');
  controls.addEventListener('start',()=>{targetPos=null;document.querySelectorAll('[data-angle]').forEach(b=>b.setAttribute('aria-pressed','false'))});
  host.addEventListener('keydown',e=>{if(e.target!==host)return;if(e.key==='Home'){e.preventDefault();setAngle('three-quarter');return;}if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();targetPos=null;const s=new THREE.Spherical().setFromVector3(camera.position.clone().sub(center));s.theta+=(e.key==='ArrowLeft'?-.12:e.key==='ArrowRight'?.12:0);s.phi=THREE.MathUtils.clamp(s.phi+(e.key==='ArrowUp'?-.12:e.key==='ArrowDown'?.12:0),.15,Math.PI-.15);camera.position.copy(new THREE.Vector3().setFromSpherical(s).add(center));});

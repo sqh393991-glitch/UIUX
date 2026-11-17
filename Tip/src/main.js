@@ -1,6 +1,7 @@
 import './style.css';
 import { initCoordination } from './coordination.js';
 import { initPanorama } from './panorama.js';
+import { initMotion } from './motion.js';
 
 import { pageMarkup } from './page-markup.js';
 
@@ -9,6 +10,7 @@ if (!app.querySelector('#home')) app.innerHTML = pageMarkup;
 
 initCoordination();
 initPanorama();
+initMotion();
 const nav = document.querySelector('.nav');
 const menu = document.querySelector('.menu-toggle');
 menu.addEventListener('click', () => {

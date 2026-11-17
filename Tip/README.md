@@ -23,6 +23,7 @@ For local development, open the address printed by Vite. This is a normal HTML, 
 | --- | --- |
 | `src/page-markup.js` | Page sections, copy, icons and layout markup |
 | `src/main.js` | Interactive initialization |
+| `src/motion.js` | Pointer highlights, button feedback and panel transitions |
 | `src/style.css` | Typography, colors, spacing, responsive layout and motion |
 | `src/coordination-state.js` | Shared task, availability and outgoing-request state |
 | `src/coordination.js` | Task cards, forms, messages and state rendering |
@@ -50,6 +51,7 @@ From the repository root, run `node scripts/build-pages.mjs` to build `Tip/` and
 - Request → Accept → Arrive → Coordinate → Handback → Complete. The panorama and step walkthrough share state. The four tabs preview stages; the actual task path requires Alex to confirm the handback.
 - Dismiss and undo, local messages, request dropdowns with edit/cancel, shift notes and availability work in the browser.
 - Incoming Alex requests and outgoing Allyson requests are separate. Busy/Break pauses new requests but does not erase accepted coverage.
+- Buttons respond to hover and press; changed panels fade in, with reduced-motion support.
 - Refresh resets the demonstration. No backend, camera, microphone, employee tracking, or real messages are used.
 
 ## Concept and asset credits

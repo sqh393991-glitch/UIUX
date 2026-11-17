@@ -2,9 +2,9 @@
   "name": "TIP 01",
   "original_model": true,
   "units": "metres",
-  "width_m": 0.15,
-  "depth_m": 0.145,
-  "height_m": 0.046,
+  "width_m": 0.162,
+  "depth_m": 0.153,
+  "height_m": 0.057,
   "blender_axes": {
     "X": "left/right",
     "Y": "front to rear (+Y temples)",
@@ -20,9 +20,9 @@
     0.055,
     0
   ],
-  "objects": 45,
-  "vertices": 19662,
-  "triangles": 38996,
+  "objects": 83,
+  "vertices": 26542,
+  "triangles": 51864,
   "materials": 11,
   "assets": [
     "tip-01.glb",
@@ -30,7 +30,5 @@
     "tip-01-studio.png",
     "tip-01-detail.png"
   ],
-  "note": "Concept geometry for portfolio presentation; not a production-engineered wearable.",
-  "glb_bytes": 797256,
-  "glb_meshes": 44
+  "note": "Thicker electronics brow and temples, separate sensor housings, machined side panels, status bar and acoustic apertures. Concept geometry for portfolio; not manufacturing validated."
 }
